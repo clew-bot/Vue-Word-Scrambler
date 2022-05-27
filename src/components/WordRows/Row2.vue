@@ -1,6 +1,6 @@
 <template>
     <div class="secondRow">
-        <div class="box2" v-for="i in words[1].length + 1" 
+        <div class="box2" v-for="i in words[1].length + twoWord" 
         :class="{'isCorrect':guessedLettersRow2Correct[i -1]=== true, 'lastBox': twoWord === 1}" :key="i">{{getLettersRow2[i - 1]}}</div>
       </div>
 </template>

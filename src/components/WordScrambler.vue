@@ -27,7 +27,7 @@
 
 
 
-      <button @click="getNextSentence">Next</button>
+      <button v-if="nextButton" @click="getNextSentence">Next</button>
     </div>
   </div>
 </template>
@@ -98,25 +98,19 @@ export default {
       const {
         data: { sentence },
       } = await response.json();
-      console.log(sentence);
       this.sentence = sentence;
-      console.log(this.sentence);
       
       sentence.split(" ").forEach((word) => {
         this.words.push(word.toUpperCase());
       });
-      console.log(this.words.length)
       this.words.length === 4 ? this.fourWord = 0
       : this.words.length === 3 ? this.threeWord = 0
       : this.words.length === 2 ? this.twoWord = 0
       : this.words.length === 1 ? this.oneWord = 0
       : null;
 
-      console.log("yo?", this.fourWord, this.threeWord, this.twoWord, this.oneWord);
       this.$store.dispatch("SAVE_SENTENCE", this.words)
       this.refreshGame++;
-      console.log("legnth", this.words[0].length);
-      console.log("First row ", this.firstRow);
       this.loading= true;
 
       // Jumble words
@@ -131,8 +125,6 @@ export default {
 
     },
        getCorrectColor(i) {
-      console.log(i - 1)
-      console.log(this.guessedLettersRow1Correct)
       if (this.guessedLettersRow1Correct[i] === false) {
         return ""
       } else if (this.guessedLettersRow1Correct[i-1] === true) {
@@ -149,7 +141,8 @@ export default {
       // getLettersRow2: state => state.getLettersRow2,
     }),
     ...mapGetters([
-      "getLettersRow1", "getLettersRow2", "getLettersRow3", "getLettersRow4", "correctColor", "guessedLettersRow1Correct", "guessedLettersRow2Correct", "guessedLettersRow3Correct", "guessedLettersRow4Correct", "getScore"
+      "getLettersRow1", "getLettersRow2", "getLettersRow3", "getLettersRow4", "correctColor", "guessedLettersRow1Correct", "guessedLettersRow2Correct", "guessedLettersRow3Correct", "guessedLettersRow4Correct", "getScore",
+      "nextButton",
     ]),
  
   },
@@ -165,29 +158,24 @@ export default {
         : e.keyCode == 32
         ? " "
         : String.fromCharCode(e.keyCode).toUpperCase();
-        console.log(key);
 
     if(this.getLettersRow1.length < this.words[0].length + 1) {
-      console.log("row 1")
     this.currentGuessRow1 = key;
     this.$store.dispatch("GUESS_LETTER_ROW_1", this.currentGuessRow1)
     }
     else if(this.getLettersRow2.length < this.words[1].length + 1) {
-       console.log("row 2")
       this.currentGuessRow2 = key;
       this.$store.dispatch("GUESS_LETTER_ROW_2", this.currentGuessRow2) 
       console.log(this.currentGuessRow2)
     } 
 
     else if(this.getLettersRow3.length < this.words[2].length + 1) {
-      console.log("row 3")
       this.currentGuessRow3 = key;
       this.$store.dispatch("GUESS_LETTER_ROW_3", this.currentGuessRow3) 
       console.log(this.currentGuessRow3)
     } 
 
    else if(this.getLettersRow4.length < this.words[3].length + 1) {
-      console.log("row 4")
       this.currentGuessRow4 = key;
       this.$store.dispatch("GUESS_LETTER_ROW_4", this.currentGuessRow4) 
       console.log(this.currentGuessRow4)
@@ -215,10 +203,6 @@ export default {
 .box1:last-child {
   background: #ffb74d;
 }
-
-
-
-
 
 .box4 {
   display: flex;
