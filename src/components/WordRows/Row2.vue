@@ -44,6 +44,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-grow:1;
   background: #e1e1e1;
   width: 8.8rem;
   height: 4rem;

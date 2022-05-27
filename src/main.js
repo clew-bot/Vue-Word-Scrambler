@@ -5,9 +5,7 @@ import Vuex from "vuex";
 Vue.config.productionTip = false;
 
 Vue.use(Vuex);
-function allAreTrue(arr) {
-  return arr.every((element) => element === true);
-}
+const allAreTrue = (arr) =>  {return arr.every((element) => element === true)};
 const store = new Vuex.Store({
   state: {
     correctSentence: null,
@@ -24,6 +22,7 @@ const store = new Vuex.Store({
     score: 0,
     nextButton: false,
     done: false,
+    winner: false,
   },
   mutations: {
     increment(state) {
@@ -41,19 +40,15 @@ const store = new Vuex.Store({
         return
       }
       state.guessedLettersRow1.push(letter);
-      console.log("letters 1", state.guessedLettersRow1);
       if (letter === "back" && state.guessedLettersRow1.length > 1) {
-        console.log("yup");
         state.correctColorRow1.pop();
         state.guessedLettersRow1.pop();
-        console.log("After pop, ", state.correctColorRow1);
-        console.log("After popLetter, ", state.guessedLettersRow1.pop());
+        state.guessedLettersRow1.pop();
         state.total--;
         state.length--;
         return;
       }
       if (letter === "back" && state.guessedLettersRow1.length === 1) {
-        console.log("No words left 1");
         state.correctColorRow1.pop();
         state.guessedLettersRow1.pop();
         return;
@@ -91,7 +86,6 @@ const store = new Vuex.Store({
       // The rest of the words
       if (state.guessedLettersRow1.length <= state.length) {
         if (state.correctSentence[0][state.total] === letter) {
-          console.log("right!");
           state.correctColorRow1.push(true);
           state.total++;
           state.length++;
@@ -114,8 +108,6 @@ const store = new Vuex.Store({
           state.correctColorRow1.push(false);
           state.total++;
           state.length++;
-          console.log("second!", state.correctColorRow1);
-          console.log("length", state.length, "total", state.total);
           return;
         }
       }
@@ -128,25 +120,21 @@ const store = new Vuex.Store({
       if(state.correctSentence.length === 2 && state.guessedLettersRow2.length === state.correctSentence[1].length && letter !== "back") {
         return
       }
-
       state.guessedLettersRow2.push(letter);
 
       if (letter === "back" && state.guessedLettersRow2.length > 1) {
         state.correctColorRow2.pop();
         state.guessedLettersRow2.pop();
-        console.log("After pop, ", state.correctColorRow2);
-        console.log("After popLetter, ", state.guessedLettersRow2.pop());
+        state.guessedLettersRow2.pop();
         state.total--;
         state.length--;
         return;
       }
 
       if (letter === "back" && state.guessedLettersRow2.length === 1) {
-        console.log("No words left");
         state.correctColorRow2.pop();
         state.guessedLettersRow2.pop();
         if (state.guessedLettersRow2.length === 0) {
-          console.log("lol");
           state.guessedLettersRow1.pop();
           state.correctColorRow1.pop();
           state.length = state.correctSentence[0].length + 1;
@@ -187,7 +175,6 @@ const store = new Vuex.Store({
       // The rest of the words
       if (state.guessedLettersRow2.length <= state.length) {
         if (state.correctSentence[1][state.total] === letter) {
-          console.log("right!");
           state.correctColorRow2.push(true);
           state.total++;
           state.length++;
@@ -206,14 +193,11 @@ const store = new Vuex.Store({
             }
             return;
           }
-          console.log("length", state.length, "total", state.total);
           return;
         } else {
           state.correctColorRow2.push(false);
           state.total++;
           state.length++;
-          console.log("second!", state.correctColorRow2);
-          console.log("length", state.length, "total", state.total);
           return;
         }
       }
@@ -230,31 +214,23 @@ const store = new Vuex.Store({
       }
 
       state.guessedLettersRow3.push(letter);
-      console.log("length of words, ", state.correctSentence[2].length);
       if (letter === "back" && state.guessedLettersRow3.length > 1) {
-        console.log("yup");
         state.correctColorRow3.pop();
         state.guessedLettersRow3.pop();
 
-        console.log("After pop, ", state.correctColorRow3);
-        console.log("After popLetter, ", state.guessedLettersRow3.pop());
+        state.guessedLettersRow3.pop();
         state.total--;
         state.length--;
         return;
       }
       if (letter === "back" && state.guessedLettersRow3.length === 1) {
-        console.log("No words left");
         state.correctColorRow3.pop();
         state.guessedLettersRow3.pop();
         if (state.guessedLettersRow3.length === 0) {
-          console.log("lol");
           state.guessedLettersRow2.pop();
           state.correctColorRow2.pop();
           state.length = state.correctSentence[1].length + 1;
           state.total = state.correctSentence[1].length;
-
-          console.log("back at 1 row", state.guessedLettersRow1);
-          console.log("back at 1 row color", state.correctColorRow1);
         }
         return;
       }
@@ -293,7 +269,6 @@ const store = new Vuex.Store({
       // The rest of the words
       if (state.guessedLettersRow3.length <= state.length) {
         if (state.correctSentence[2][state.total] === letter) {
-          console.log("right!");
           state.correctColorRow3.push(true);
           state.total++;
           state.length++;
@@ -318,19 +293,11 @@ const store = new Vuex.Store({
           state.correctColorRow3.push(false);
           state.total++;
           state.length++;
-          console.log("second!", state.correctColorRow3);
-          console.log("length", state.length, "total", state.total);
           return;
         }
       }
     },
-
-
-
-
-
     addGuessedLetterRow4(state, letter) {
-
       if (state.done === true) {
         return;
       }
@@ -339,12 +306,10 @@ const store = new Vuex.Store({
       }
       state.guessedLettersRow4.push(letter);
 
-      console.log("length of words, ", state.correctSentence[3].length);
       if (letter === "back" && state.guessedLettersRow4.length > 1) {
         state.correctColorRow4.pop();
         state.guessedLettersRow4.pop();
-        console.log("After pop, ", state.correctColorRow4);
-        console.log("After popLetter, ", state.guessedLettersRow4.pop());
+        state.guessedLettersRow4.pop();
         state.total--;
         state.length--;
         return;
@@ -360,9 +325,6 @@ const store = new Vuex.Store({
         }
         return;
       }
-
-      
-
       if (state.correctSentence[3].length === 1) {
         if (state.total === 1 && state.guessedLettersRow4[0].length === 1) {
           if (letter === " ") {
@@ -397,7 +359,6 @@ const store = new Vuex.Store({
       // The rest of the words
       if (state.guessedLettersRow4.length <= state.length) {
         if (state.correctSentence[3][state.total] === letter) {
-          console.log("right!");
           state.correctColorRow4.push(true);
           state.total++;
           state.length++;
@@ -423,16 +384,8 @@ const store = new Vuex.Store({
           state.correctColorRow4.push(false);
           state.total++;
           state.length++;
-          console.log("second!", state.correctColorRow4);
-          console.log("length", state.length, "total", state.total);
           return;
         }
-      }
-      if (
-        state.correctSentence.length === 4 &&
-        state.guessedLettersRow1.length === state.length
-      ) {
-        console.log("hi");
       }
     },
     newGame(state) {
@@ -451,20 +404,12 @@ const store = new Vuex.Store({
       state.nextButton = false;
       state.done = false
     },
-
-    //Check if won
-    //  if (state.correctSentence.length === 4 && state.correctColorRow1.length === state.correctSentence[0].length && state.correctColorRow2.length === state.correctSentence[1].length && state.correctColorRow3.length === state.correctSentence[2].length && state.correctColorRow4.length === state.correctSentence[3].length) {
-    //    console.log("yes")
-    //  }
-    // }
   },
   actions: {
     SAVE_SENTENCE({ commit }, sentence) {
       commit("saveSentenceAnswer", sentence);
     },
-    GUESS_LETTER_ROW_1: ({ commit, state }, letter) => {
-      state.correctColor = null;
-
+    GUESS_LETTER_ROW_1: ({ commit }, letter) => {
       commit("addGuessedLetterRow1", letter);
     },
     GUESS_LETTER_ROW_2: ({ commit }, letter) => {
@@ -514,6 +459,9 @@ const store = new Vuex.Store({
     nextButton: (state) => {
       return state.nextButton;
     },
+    getWinner: (state) => {
+      return state.winner;
+    }
   },
 });
 

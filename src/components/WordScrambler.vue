@@ -1,9 +1,10 @@
 <template>
-  <div class="hello">
-    <h1>Word Scrambler</h1>
+  <div v-if="!getWinner">
+      <h1 id="sentence">{{copy && copy.join(" ")}}</h1>
+    <h4>Guess the Sentence! Start typing</h4>
+    <h4>The yellow/orange blocks are meant for spaces</h4>
     <h2>Score: {{getScore}}</h2>
-    <button @click="getWords">Click</button>
-    <h1>{{sentence}}</h1>
+ 
     <div class="container" :key="refreshGame">
     <div v-if="loading">
       <Row1  :getLettersRow1="getLettersRow1" :guessedLettersRow1Correct="guessedLettersRow1Correct" :words="words" :oneWord="oneWord"/>
@@ -25,19 +26,24 @@
       </div>
 </div>
 
-
-
-      <button v-if="nextButton" @click="getNextSentence">Next</button>
+<div class="btn-container">
+ <button v-if="nextButton" @click="getNextSentence" class="next-btn">Next</button>
+</div>
     </div>
+         
+  </div>
+  <div v-else>
+    <Winner />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Row1 from '@/components/WordRows/Row1.vue'
 import Row2 from '@/components/WordRows/Row2.vue'
 import Row3 from '@/components/WordRows/Row3.vue'
 import Row4 from '@/components/WordRows/Row4.vue'
+import Winner from '@/components/Winner/Winner.vue'
 export default {
   name: "WordScrambler",
   data() {
@@ -57,6 +63,9 @@ export default {
       twoWord: null,
       threeWord: null,
       fourWord: null,
+      getWinner: false,
+      getScore: 0,
+      copy: "",
 
     };
   },
@@ -64,15 +73,18 @@ export default {
     Row1,
     Row2,
     Row3,
-    Row4
+    Row4,
+    Winner
   },
   methods: {
-    consoleme() {
-      console.log("LENGTH", this.words[0].length);
-    },
-
     getNextSentence() {
+      if(this.counter === 10) { 
+      this.getWinner = true
+      return
+      }
+      this.getWinner = false;
       this.counter++;
+      this.getScore++;
       this.words = [];
       this.loading = false;
       this.$store.dispatch("NEW_GAME");
@@ -101,7 +113,7 @@ export default {
       this.sentence = sentence;
       
       sentence.split(" ").forEach((word) => {
-        this.words.push(word.toUpperCase());
+        this.words.push(word.toLowerCase());
       });
       this.words.length === 4 ? this.fourWord = 0
       : this.words.length === 3 ? this.threeWord = 0
@@ -109,20 +121,28 @@ export default {
       : this.words.length === 1 ? this.oneWord = 0
       : null;
 
-      this.$store.dispatch("SAVE_SENTENCE", this.words)
-      this.refreshGame++;
-      this.loading= true;
+    String.prototype.shuffle = function() {
+        return this.split(" ").map(function(word, i) {
+            let a = word.split(""),
+            n = a.length;
 
-      // Jumble words
-    //      for(var i = this.words.length - 1; i > 0; i--) {
-    //     var j = Math.floor(Math.random() * (i + 1));
-    //     var tmp = this.words[i];
-    //     this.words[i] = this.words[j];
-    //     this.words[j] = tmp;
-    // }
-    // console.log(this.words);
-    // return this.words.join("");
-
+        for (i = n - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+         }
+          return a.join("");
+        }).join(" ");
+      }
+    let copy = [...this.words];
+    for (var i = 0; i < this.words.length; i++) {
+      copy[i] = this.words[i].shuffle();
+    }
+    this.copy = copy;
+    this.$store.dispatch("SAVE_SENTENCE", this.words)
+    this.refreshGame++;
+    this.loading= true;
     },
        getCorrectColor(i) {
       if (this.guessedLettersRow1Correct[i] === false) {
@@ -136,28 +156,24 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      // getLettersRow1: state => state.getLettersRow1,
-      // getLettersRow2: state => state.getLettersRow2,
-    }),
     ...mapGetters([
-      "getLettersRow1", "getLettersRow2", "getLettersRow3", "getLettersRow4", "correctColor", "guessedLettersRow1Correct", "guessedLettersRow2Correct", "guessedLettersRow3Correct", "guessedLettersRow4Correct", "getScore",
-      "nextButton",
+      "getLettersRow1", "getLettersRow2", "getLettersRow3", "getLettersRow4", "correctColor", "guessedLettersRow1Correct", "guessedLettersRow2Correct", "guessedLettersRow3Correct", "guessedLettersRow4Correct",
+      "nextButton", 
     ]),
  
   },
   mounted() {
     this.getWords();
-   window.addEventListener("keyup", (e) => {
+    window.addEventListener("keyup", (e) => {
     e.preventDefault();
     let key =
       e.keyCode == 13
-        ? "{enter}"
+        ? "enter"
         : e.keyCode == 8
         ? "back"
         : e.keyCode == 32
         ? " "
-        : String.fromCharCode(e.keyCode).toUpperCase();
+        : String.fromCharCode(e.keyCode).toLowerCase();
 
     if(this.getLettersRow1.length < this.words[0].length + 1) {
     this.currentGuessRow1 = key;
@@ -166,19 +182,16 @@ export default {
     else if(this.getLettersRow2.length < this.words[1].length + 1) {
       this.currentGuessRow2 = key;
       this.$store.dispatch("GUESS_LETTER_ROW_2", this.currentGuessRow2) 
-      console.log(this.currentGuessRow2)
     } 
 
     else if(this.getLettersRow3.length < this.words[2].length + 1) {
       this.currentGuessRow3 = key;
       this.$store.dispatch("GUESS_LETTER_ROW_3", this.currentGuessRow3) 
-      console.log(this.currentGuessRow3)
     } 
 
    else if(this.getLettersRow4.length < this.words[3].length + 1) {
       this.currentGuessRow4 = key;
       this.$store.dispatch("GUESS_LETTER_ROW_4", this.currentGuessRow4) 
-      console.log(this.currentGuessRow4)
     } 
   });
   },
@@ -187,38 +200,31 @@ export default {
 
 <style scoped>
 
-.isCorrect {
-  background: #4caf50 !important;
-}
-.box1 {
-  background: #e1e1e1;
-  min-width: 90px;
-  height: 4rem;
-  margin: 5px;
+.btn-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
-.box1:last-child {
-  background: #ffb74d;
+#sentence {
+  color: #26528F;
+  padding-top: 10%;
 }
 
-.box4 {
+
+.next-btn {
+  width: 100px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: #e1e1e1;
-  width: 11.1rem;
-  height: 4rem;
-  margin: 5px;
-}
+  border: none;
+  padding: 10px;
+  background: #4caf50;
 
+}
 .container {
   display: flex;
-
   justify-content: center;
-  /* align-items: center; */
   flex-direction: column;
   background: white;
   margin-left: 200px;

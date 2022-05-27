@@ -2,8 +2,8 @@
     <div class="firstRow">
         <div class="box1" v-for="i in words[0].length + oneWord" 
         :class="{'isCorrect':guessedLettersRow1Correct[i -1]=== true, 
-                    'lastBox': oneWord === 1}" :key="i">{{getLettersRow1[i - 1]}}</div>
-              <!-- <button @click="consoleme">click</button> -->
+                    'lastBox': oneWord === 1, 
+                    'twoBoxes' : words[0].length === 1}" :key="i">{{getLettersRow1[i - 1]}}</div>
       </div>
 
 </template>
@@ -29,19 +29,17 @@ export default {
             required: true
         }
     },
-    methods: {
-        consoleme() {
-            console.log(this.words);
-        }
-    }
-
 }
 </script>
 
 <style scoped>
+
+.twoBoxes {
+  width: 30rem !important;
+}
 .firstRow {
   display: flex;
-    flex-direction: row;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
 }
@@ -50,7 +48,8 @@ export default {
 }
 .box1 {
   background: #e1e1e1;
-  min-width:55px;
+  min-width:50px;
+  flex-grow:1;
   height: 4rem;
   margin: 5px;
   display: flex;
