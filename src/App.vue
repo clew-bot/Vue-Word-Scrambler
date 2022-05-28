@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import WordScrambler from './components/WordScrambler.vue'
+import WordScrambler from '@/components/WordScrambler.vue'
 
 export default {
   name: 'App',
@@ -17,8 +17,8 @@ export default {
 
 <style>
 html {
-background: #efefef  
-}
+  background: #efefef  
+  }
 
 #app {
   font-family: "Open Sans", sans-serif;
@@ -26,7 +26,6 @@ background: #efefef
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-
   background: #efefef;
 
 }

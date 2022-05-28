@@ -1,6 +1,6 @@
 <template>
   <div v-if="!getWinner">
-      <h1 id="sentence">{{copy && copy.join(" ")}}</h1>
+      <h1 id="sentence">{{copy}}</h1>
     <h4>Guess the Sentence! Start typing</h4>
     <h4>The yellow/orange blocks are meant for spaces</h4>
     <h2>Score: {{getScore}}</h2>
@@ -87,7 +87,7 @@ export default {
       this.getScore++;
       this.words = [];
       this.loading = false;
-      this.$store.dispatch("NEW_GAME");
+      this.$store.dispatch("wordScrambler/NEW_GAME");
       this.getWords();
     },
 
@@ -136,11 +136,11 @@ export default {
         }).join(" ");
       }
     let copy = [...this.words];
-    for (var i = 0; i < this.words.length; i++) {
+    for (let i = 0; i < this.words.length; i++) {
       copy[i] = this.words[i].shuffle();
     }
-    this.copy = copy;
-    this.$store.dispatch("SAVE_SENTENCE", this.words)
+    this.copy = copy.join(" ");
+    this.$store.dispatch("wordScrambler/SAVE_SENTENCE", this.words)
     this.refreshGame++;
     this.loading= true;
     },
@@ -156,7 +156,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters("wordScrambler",[
       "getLettersRow1", "getLettersRow2", "getLettersRow3", "getLettersRow4", "correctColor", "guessedLettersRow1Correct", "guessedLettersRow2Correct", "guessedLettersRow3Correct", "guessedLettersRow4Correct",
       "nextButton", 
     ]),
@@ -177,21 +177,21 @@ export default {
 
     if(this.getLettersRow1.length < this.words[0].length + 1) {
     this.currentGuessRow1 = key;
-    this.$store.dispatch("GUESS_LETTER_ROW_1", this.currentGuessRow1)
+    this.$store.dispatch("wordScrambler/GUESS_LETTER_ROW_1", this.currentGuessRow1)
     }
     else if(this.getLettersRow2.length < this.words[1].length + 1) {
       this.currentGuessRow2 = key;
-      this.$store.dispatch("GUESS_LETTER_ROW_2", this.currentGuessRow2) 
+      this.$store.dispatch("wordScrambler/GUESS_LETTER_ROW_2", this.currentGuessRow2) 
     } 
 
     else if(this.getLettersRow3.length < this.words[2].length + 1) {
       this.currentGuessRow3 = key;
-      this.$store.dispatch("GUESS_LETTER_ROW_3", this.currentGuessRow3) 
+      this.$store.dispatch("wordScrambler/GUESS_LETTER_ROW_3", this.currentGuessRow3) 
     } 
 
    else if(this.getLettersRow4.length < this.words[3].length + 1) {
       this.currentGuessRow4 = key;
-      this.$store.dispatch("GUESS_LETTER_ROW_4", this.currentGuessRow4) 
+      this.$store.dispatch("wordScrambler/GUESS_LETTER_ROW_4", this.currentGuessRow4) 
     } 
   });
   },
@@ -212,7 +212,6 @@ export default {
   padding-top: 10%;
 }
 
-
 .next-btn {
   width: 100px;
   display: flex;
@@ -220,7 +219,6 @@ export default {
   border: none;
   padding: 10px;
   background: #4caf50;
-
 }
 .container {
   display: flex;

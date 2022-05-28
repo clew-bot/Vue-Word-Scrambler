@@ -1,0 +1,6 @@
+export const SAVE_SENTENCE = "SAVE_SENTENCE";
+export const GUESS_LETTER_ROW_1 = "GUESS_LETTER_ROW_1";
+export const GUESS_LETTER_ROW_2 = "GUESS_LETTER_ROW_2";
+export const GUESS_LETTER_ROW_3 = "GUESS_LETTER_ROW_3";
+export const GUESS_LETTER_ROW_4 = "GUESS_LETTER_ROW_4";
+export const NEW_GAME = "NEW_GAME";

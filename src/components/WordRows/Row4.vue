@@ -39,8 +39,8 @@ export default {
   width: 11.1rem;
   height: 4rem;
   margin: 5px;
+  flex-grow: 1;
 }
-
 
 .fourthRow {
   display: flex;
