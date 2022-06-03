@@ -29,7 +29,8 @@ export default {
 <style scoped>
 
 .isCorrect {
-  background: #4caf50 !important;
+  background: #82d585 !important;
+    animation:shake .5s ease-in-out;
 }
 .box4 {
   display: flex;
@@ -40,6 +41,7 @@ export default {
   height: 4rem;
   margin: 5px;
   flex-grow: 1;
+  border-radius: 5px;
 }
 
 .fourthRow {
@@ -49,4 +51,11 @@ export default {
   align-items: center;
 }
 
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, -5px); }
+  50% { transform: translate(5px, -5px); }
+  75% { transform: translate(-5px, -5px); }
+  100% { transform: translate(0, 0); }
+}
 </style>

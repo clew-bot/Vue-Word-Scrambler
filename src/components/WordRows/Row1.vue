@@ -44,7 +44,9 @@ export default {
   align-items: center;
 }
 .isCorrect {
-  background: #4caf50 !important;
+  background: #82d585 !important;
+  transition: background 0.5s ease-in-out;
+  animation:shake .5s ease-in-out;
 }
 .box1 {
   background: #e1e1e1;
@@ -55,10 +57,19 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
 }
 
 .lastBox:last-child {
   background: #ffb74d;
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, -5px); }
+  50% { transform: translate(5px, -5px); }
+  75% { transform: translate(-5px, -5px); }
+  100% { transform: translate(0, 0); }
 }
 
 </style>

@@ -1,24 +1,9 @@
-# word-scrambler
+# Vue Word Scrambler
 
-## Project setup
-```
-npm install
-```
+## Description:
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+<p>Word scrambling game made in VueJS. Randomly generated sentence from a curated list, try and solve the sentence correctly. No penalities for wrong answers. Reach 10 points to win!</p>
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Demo:
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![Word Scrambler](./src/assets/demo.gif)

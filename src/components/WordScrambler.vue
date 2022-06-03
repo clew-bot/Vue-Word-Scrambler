@@ -1,7 +1,7 @@
 <template>
   <div v-if="!getWinner">
       <h1 id="sentence">{{copy}}</h1>
-    <h4>Guess the Sentence! Start typing</h4>
+    <h4 @click="consoleme">Guess the Sentence! Start typing</h4>
     <h4>The yellow/orange blocks are meant for spaces</h4>
     <h2>Score: {{getScore}}</h2>
  
@@ -44,6 +44,7 @@ import Row2 from '@/components/WordRows/Row2.vue'
 import Row3 from '@/components/WordRows/Row3.vue'
 import Row4 from '@/components/WordRows/Row4.vue'
 import Winner from '@/components/Winner/Winner.vue'
+import json from "../assets/sentence.json"
 export default {
   name: "WordScrambler",
   data() {
@@ -66,6 +67,7 @@ export default {
       getWinner: false,
       getScore: 0,
       copy: "",
+      sentences: json,
 
     };
   },
@@ -77,6 +79,9 @@ export default {
     Winner
   },
   methods: {
+    consoleme() {
+      console.log(this.sentences[Math.floor(Math.random()*this.sentences.length)]);
+    },
     getNextSentence() {
       if(this.counter === 10) { 
       this.getWinner = true
@@ -97,22 +102,11 @@ export default {
       this.twoWord = 1;
       this.oneWord = 1;
 
-      const response = await fetch(
-        `https://api.hatchways.io/assessment/sentences/${this.counter}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
-      const {
-        data: { sentence },
-      } = await response.json();
-      this.sentence = sentence;
+
+      let newSentence = this.sentences[Math.floor(Math.random()*this.sentences.length)]
+      console.log("new", newSentence)
       
-      sentence.split(" ").forEach((word) => {
+      newSentence.split(" ").forEach((word) => {
         this.words.push(word.toLowerCase());
       });
       this.words.length === 4 ? this.fourWord = 0
@@ -208,8 +202,9 @@ export default {
 }
 
 #sentence {
-  color: #26528F;
-  padding-top: 10%;
+  color: #8f262a;
+  padding-top: 5%;
+  font-size: 3rem !important;
 }
 
 .next-btn {
@@ -219,6 +214,9 @@ export default {
   border: none;
   padding: 10px;
   background: #4caf50;
+  border-radius: 5px;
+  box-shadow: 5px;
+  color: white;
 }
 .container {
   display: flex;

@@ -33,7 +33,8 @@ export default {
 <style scoped>
 
 .isCorrect {
-  background: #4caf50 !important;
+  background: #82d585 !important;
+    animation:shake .5s ease-in-out;
 }
 .box3 {
   display: flex;
@@ -44,6 +45,7 @@ export default {
   width: 4.6rem;
   height: 4rem;
   margin: 5px;
+  border-radius: 5px;
 }
 .lastBox:last-child {
   background: #ffb74d;
@@ -54,6 +56,13 @@ export default {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+}
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, -5px); }
+  50% { transform: translate(5px, -5px); }
+  75% { transform: translate(-5px, -5px); }
+  100% { transform: translate(0, 0); }
 }
 
 
