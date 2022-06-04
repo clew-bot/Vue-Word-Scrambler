@@ -1,7 +1,7 @@
 <template>
   <div v-if="!getWinner">
       <h1 id="sentence">{{copy}}</h1>
-    <h4 @click="consoleme">Guess the Sentence! Start typing</h4>
+    <h4 >Guess the Sentence! Start typing</h4>
     <h4>The yellow/orange blocks are meant for spaces</h4>
     <h2>Score: {{getScore}}</h2>
  
@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     consoleme() {
-      console.log(this.sentences[Math.floor(Math.random()*this.sentences.length)]);
+      console.log();
     },
     getNextSentence() {
       if(this.counter === 10) { 
@@ -104,7 +104,6 @@ export default {
 
 
       let newSentence = this.sentences[Math.floor(Math.random()*this.sentences.length)]
-      console.log("new", newSentence)
       
       newSentence.split(" ").forEach((word) => {
         this.words.push(word.toLowerCase());
